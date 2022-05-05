@@ -1,17 +1,19 @@
 import { SubmitFeedbackUseCase } from "./submit-feedback-use-case";
 
 const sut = () => {
+  const createFeedbackSpy = jest.fn();
+  const sendMailSpy = jest.fn();
   const submitFeedback = new SubmitFeedbackUseCase(
-    { create: async () => {} },
-    { sendMail: async () => {} }
+    { create: createFeedbackSpy },
+    { sendMail: sendMailSpy }
   );
 
-  return { submitFeedback };
+  return { submitFeedback, createFeedbackSpy, sendMailSpy };
 };
 
 describe("Submit feedback", () => {
   it("should be able to submit a feedback", async () => {
-    const { submitFeedback } = sut();
+    const { submitFeedback, createFeedbackSpy, sendMailSpy } = sut();
 
     await expect(
       submitFeedback.execute({
@@ -20,6 +22,9 @@ describe("Submit feedback", () => {
         screenshot: "data:image/png;base64,adsfgopHAPDGOIG",
       })
     ).resolves.not.toThrow();
+
+    expect(createFeedbackSpy).toHaveBeenCalled();
+    expect(sendMailSpy).toHaveBeenCalled();
   });
 
   it("should reject with wrong screenshot format", async () => {
