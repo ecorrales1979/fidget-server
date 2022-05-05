@@ -1,11 +1,17 @@
 import { SubmitFeedbackUseCase } from "./submit-feedback-use-case";
 
+const sut = () => {
+  const submitFeedback = new SubmitFeedbackUseCase(
+    { create: async () => {} },
+    { sendMail: async () => {} }
+  );
+
+  return { submitFeedback };
+};
+
 describe("Submit feedback", () => {
   it("should be able to submit a feedback", async () => {
-    const submitFeedback = new SubmitFeedbackUseCase(
-      { create: async () => {} },
-      { sendMail: async () => {} }
-    );
+    const { submitFeedback } = sut();
 
     await expect(
       submitFeedback.execute({
