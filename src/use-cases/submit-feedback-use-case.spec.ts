@@ -33,4 +33,15 @@ describe("Submit feedback", () => {
       })
     ).rejects.toThrow();
   });
+
+  it("should reject with empty type", async () => {
+    const { submitFeedback } = sut();
+
+    await expect(
+      submitFeedback.execute({
+        type: "",
+        comment: "Something",
+      })
+    ).rejects.toThrow();
+  });
 });
