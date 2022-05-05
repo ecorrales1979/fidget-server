@@ -21,4 +21,16 @@ describe("Submit feedback", () => {
       })
     ).resolves.not.toThrow();
   });
+
+  it("should reject with wrong screenshot format", async () => {
+    const { submitFeedback } = sut();
+
+    await expect(
+      submitFeedback.execute({
+        type: "bug",
+        comment: "Something",
+        screenshot: "picture.png",
+      })
+    ).rejects.toThrow();
+  });
 });
